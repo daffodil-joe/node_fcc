@@ -1,11 +1,10 @@
-const { Timestamp } = require("mongodb");
 const mongoose = require("mongoose");
 
 const ProductSchema = mongoose.Schema(
   {
     name: {
       type: String,
-      required: [ture, "Please enter a product name"],
+      required: [true, "Please enter a product name"],
     },
     quantitiy: {
       type: Number,
