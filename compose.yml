@@ -6,7 +6,10 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./:/app:ro
+      - ./:/app:ro #bindmount mounts all the appropriate files to the app dir in the container and makes it read only (:ro)
+      #- /app/node_modules #persists the data in node modules.
+    environment:
+      - PORT=3000
   mongo:
     image: mongo
     ports:
@@ -14,6 +17,8 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: password
+    volumes:
+      - /data:/data/db #persits the db changes
   mongo-express:
     image: mongo-express
     ports:
@@ -21,5 +26,6 @@ services:
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: password
-      # ********Research the line below, does not seem to be neccessary if both containers running in the same network.
+      # trasnlates below**** mongodb://${INITDB_ROOT_USERNAME}:${INITBD_ROOT_PASSWORD@service:ports}
+      #service (mongo) is resolved by docker to be the port at which the mongo servie is running
       ME_CONFIG_MONGODB_URL: mongodb://root:password@mongo:27017/
